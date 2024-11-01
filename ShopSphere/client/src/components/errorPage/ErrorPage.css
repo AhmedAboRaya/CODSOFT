@@ -1,0 +1,90 @@
+
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  .eyes {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .eye {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #333;
+    position: relative;
+    margin: 0 10px;
+    overflow: hidden;
+  }
+  
+  .eye__pupil {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #333;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s;
+  }
+  
+  .eye__pupil--left {
+    transform: translate(-30%, -50%);
+  }
+  
+  .eye__pupil--right {
+    transform: translate(-70%, -50%);
+  }
+  
+  .error-page__heading-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+  }
+  
+  .error-page__heading-description {
+    font-size: 1.5rem;
+    color: #666;
+  }
+  
+  .error-page__button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .error-page__button:hover {
+    background-color: #0056b3;
+  }
+  
+  .color-switcher {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
