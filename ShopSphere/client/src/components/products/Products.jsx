@@ -4,13 +4,40 @@ import ProductCard from "../../ui/ProductCard";
 import { useEffect, useState } from "react";
 import ErrorPage from "../errorPage/ErrorPage"; 
 import { host } from "../../host.js";
+import { useNavigate } from "react-router-dom"; 
 
 const Products = ({ search, setCartItems }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false); 
+  const [authError, setAuthError] = useState(false); 
+  const [sessionExpiredMessage, setSessionExpiredMessage] = useState(''); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem("token"); 
+
+      if (!token) {
+        setAuthError(true);
+        return; 
+      }
+
+      try {
+        const response = await axios.get(`${host}/auth/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}` 
+          }
+        });
+        
+        localStorage.setItem('userId', response.data._id);
+      } catch (error) {
+        console.error("Token validation failed:", error);
+        setSessionExpiredMessage('Your session has expired. Please log in again.');
+        setAuthError(true); 
+      }
+    };
+
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${host}/products`);
@@ -25,8 +52,32 @@ const Products = ({ search, setCartItems }) => {
       }
     };
 
+    validateToken(); 
     fetchProducts();
   }, []);
+
+  const updateProductStock = (productId) => {
+    setProducts((prevProducts) => 
+      prevProducts.map((product) => 
+        product._id === productId ? { ...product, stock: product.stock - 1 } : product
+      )
+    );
+  };
+
+  if (authError) {
+    setTimeout(() => {
+      navigate("/login");
+    }, 4000); 
+    
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">{sessionExpiredMessage}</h2>
+          <p className="text-gray-600">You will be redirected to the login page shortly.</p>
+        </div>
+      </div>
+    );
+  }
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search.toLowerCase())
@@ -54,6 +105,8 @@ const Products = ({ search, setCartItems }) => {
               rate={product.ratings.average}
               count={product.ratings.count}
               setCartItems={setCartItems}
+              stock={product.stock}
+              updateStock={updateProductStock}
             />
           ))}
         </div>

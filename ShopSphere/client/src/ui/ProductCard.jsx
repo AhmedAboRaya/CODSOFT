@@ -1,4 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios"; 
+import { host } from "../host.js"; 
 
 /* eslint-disable react/prop-types */
 const ProductCard = ({
@@ -9,6 +11,8 @@ const ProductCard = ({
   rate,
   count,
   setCartItems,
+  stock,
+  updateStock,
 }) => {
   const renderStars = () => {
     const stars = [];
@@ -17,7 +21,7 @@ const ProductCard = ({
         <input
           key={i}
           type="radio"
-          name={`rating-${id}`} // Unique name for each product
+          name={`rating-${id}`} 
           className="mask mask-star bg-yellow-500"
           checked={i <= Math.round(rate)}
           readOnly
@@ -28,19 +32,40 @@ const ProductCard = ({
     return stars;
   };
 
-  const handleAddToCart = () => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === id);
+  const handleAddToCart = async () => {
+    const quantity = 1; 
+    const userId = localStorage.getItem("userId"); 
 
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === id ? { ...item, count: item.count + 1 } : item
-        );
-      } else {
-        return [...prevItems, { id, title, price, imageUrl, count: 1 }];
-      }
-    });
-    toast.success("Added Successfully");
+    if (!userId) {
+      toast.error("User ID not found. Please log in again."); 
+      return;
+    }
+
+    try {
+      await axios.post(`${host}/cart/add`, {
+        userId, 
+        productId: id, 
+        quantity, 
+      });
+
+      setCartItems((prevItems) => {
+        const existingItem = prevItems.find((item) => item.id === id);
+
+        if (existingItem) {
+          return prevItems.map((item) =>
+            item.id === id ? { ...item, count: item.count + 1 } : item
+          );
+        } else {
+          return [...prevItems, { id, title, price, imageUrl, count: 1 }];
+        }
+      });
+      updateStock(id);
+      toast.success("Added Successfully"); 
+      
+    } catch (error) {
+      console.error("Error adding item to cart:", error.response.data);
+      toast.error("Failed to add item to cart. Please try again.");
+    }
   };
 
   return (
@@ -53,15 +78,17 @@ const ProductCard = ({
             className="w-full h-full object-cover duration-700"
           />
         </figure>
-        <div className="card-body p-4 flex flex-col">
+        <div className="card-body p-4 flex flex-col ">
           <h2 className="card-title text-lg font-bold">{title}</h2>
-          <p className="text-xl font-semibold">{price}$</p>
+          <p className="text-xl text-left font-semibold">{price}$</p>
+          <p className="text-md text-left">{stock ? `stock : ${stock}` : "out of stock"}</p>
           <div className="rating flex items-center mt-2">
             {renderStars()} &nbsp;
-            <span className="text-gray-600">({count})</span>
+            <span className="text-gray-600 mt-1">({count})</span>
           </div>
           <div className="card-actions justify-end mt-auto">
-            <button className="btn btn-primary" onClick={handleAddToCart}>
+            <button className="btn btn-primary" onClick={handleAddToCart}
+             disabled={!stock}>
               Add to cart
             </button>
           </div>

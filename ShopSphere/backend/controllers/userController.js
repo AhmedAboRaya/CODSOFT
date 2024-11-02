@@ -45,7 +45,6 @@ exports.signup = async (req, res) => {
     }
 
     const { name, email, password, role } = req.body;
-
     const userRole = role || 'Customer';
 
     try {
@@ -54,11 +53,19 @@ exports.signup = async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-        user = new User({ name, email, password, userRole: role });
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        user = new User({
+            name,
+            email,
+            password: hashedPassword, 
+            userRole
+        });
+
         await user.save();
 
         const payload = { userId: user.id };
-        const token = jwt.sign(payload, 'secretkey', { expiresIn: '1h' });
+        const token = jwt.sign(payload, 'your_secret_key', { expiresIn: '1h' });
 
         res.status(201).json({ token });
     } catch (err) {

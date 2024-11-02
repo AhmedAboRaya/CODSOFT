@@ -1,33 +1,60 @@
-// controllers/productController.js
-
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
   try {
-    const product = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      category: req.body.category, // Category ID
-      stock: req.body.stock,
-      images: req.body.images,
-      brand: req.body.brand
+    const { name, brand, price, oldPrice, screenSize, storage, camera, battery, category, images, stock } = req.body;
+
+    // Check for required fields
+    if (!name || !brand || !price || !category) {
+      return res.status(400).json({ message: 'Please provide all required product details' });
+    }
+
+    if (Number(oldPrice) <= Number(price)) {
+      return res.status(400).json({ message: 'Old price must be greater than the new price' });
+    }
+
+    const categoryExists = await Category.findById(category);
+    if (!categoryExists) {
+      return res.status(400).json({ message: 'Invalid category ID' });
+    }
+
+    const existingProduct = await Product.findOne({ name });
+    if (existingProduct) {
+      return res.status(409).json({ message: 'Product already exists' });
+    }
+
+    const newProduct = new Product({
+      name,
+      brand,
+      price: Number(price),
+      oldPrice: oldPrice ? Number(oldPrice) : undefined,
+      screenSize,
+      storage,
+      camera,
+      battery,
+      category,
+      images,
+      stock: Number(stock),
     });
-    const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
+
+    await newProduct.save();
+    res.status(201).json({ message: 'Product added successfully', product: newProduct });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Server error, could not add product' });
   }
 };
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category'); // Populate category details
-    res.json(products);
+    const products = await Product.find().populate('category');
+    res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Failed to fetch products' });
   }
 };
 
@@ -35,33 +62,45 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('category');
-    if (!product) return res.status(404).json({ message: "Product not found" });
-    res.json(product);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Failed to fetch the product' });
   }
 };
 
 // Update a product by ID
 exports.updateProduct = async (req, res) => {
   try {
+    const { name, description, price, oldPrice, category, stock, images, brand } = req.body;
+
+    if ( !name && !description && !price && !oldPrice && !category && !stock && !images && !brand) {
+      return res.status(400).json({ message: 'No field to update' });
+    }
+
+    if(Number(oldPrice)){
+      if (Number(oldPrice) <= Number(price)) {
+        return res.status(400).json({ message: 'Old price must be greater than the new price' });
+      }
+    }
+
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      {
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        category: req.body.category,
-        stock: req.body.stock,
-        images: req.body.images,
-        brand: req.body.brand
-      },
-      { new: true }
+      { name, description, price, oldPrice, category, stock, images, brand },
+      { new: true, runValidators: true }
     );
-    if (!product) return res.status(404).json({ message: "Product not found" });
-    res.json(product);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product updated successfully', product });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(400).json({ message: 'Failed to update the product' });
   }
 };
 
@@ -69,9 +108,12 @@ exports.updateProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-    if (!deletedProduct) return res.status(404).json({ message: "Product not found" });
-    res.json({ message: "Product deleted successfully" });
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Failed to delete the product' });
   }
 };
