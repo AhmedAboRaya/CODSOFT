@@ -17,7 +17,7 @@ const ProductCard = ({
         <input
           key={i}
           type="radio"
-          name="rating-1"
+          name={`rating-${id}`} // Unique name for each product
           className="mask mask-star bg-yellow-500"
           checked={i <= Math.round(rate)}
           readOnly
@@ -37,7 +37,7 @@ const ProductCard = ({
           item.id === id ? { ...item, count: item.count + 1 } : item
         );
       } else {
-        return [...prevItems, { id: id,title: title, price: price, imageUrl: imageUrl, count: 1 }];
+        return [...prevItems, { id, title, price, imageUrl, count: 1 }];
       }
     });
     toast.success("Added Successfully");
@@ -45,7 +45,7 @@ const ProductCard = ({
 
   return (
     <>
-      <div className="card duration-700 rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl card-compact bg-base-100  shadow-xl">
+      <div className="card duration-700 rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl card-compact bg-base-100 shadow-xl">
         <figure className="overflow-hidden flex justify-center items-center h-48">
           <img
             src={imageUrl}
@@ -55,9 +55,9 @@ const ProductCard = ({
         </figure>
         <div className="card-body p-4 flex flex-col">
           <h2 className="card-title text-lg font-bold">{title}</h2>
-          <p className="text-xl font-semibold ">{price}$</p>
+          <p className="text-xl font-semibold">{price}$</p>
           <div className="rating flex items-center mt-2">
-            {renderStars()} &nbsp;{" "}
+            {renderStars()} &nbsp;
             <span className="text-gray-600">({count})</span>
           </div>
           <div className="card-actions justify-end mt-auto">

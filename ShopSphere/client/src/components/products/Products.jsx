@@ -3,6 +3,7 @@ import axios from "axios";
 import ProductCard from "../../ui/ProductCard";
 import { useEffect, useState } from "react";
 import ErrorPage from "../errorPage/ErrorPage"; 
+import { host } from "../../host.js";
 
 const Products = ({ search, setCartItems }) => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ const Products = ({ search, setCartItems }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://fakestoreapi.com/products");
+        const response = await axios.get(`${host}/products`);
         setTimeout(() => {
           setProducts(response.data);
           setLoading(false);
@@ -28,7 +29,7 @@ const Products = ({ search, setCartItems }) => {
   }, []);
 
   const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(search.toLowerCase())
+    product.name.toLowerCase().includes(search.toLowerCase())
   );
 
   if (error) {
@@ -45,13 +46,13 @@ const Products = ({ search, setCartItems }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 container">
           {filteredProducts.map((product) => (
             <ProductCard
-              key={product.id}
-              id={product.id}
-              imageUrl={product.image}
-              title={product.title}
+              key={product._id}
+              id={product._id}
+              imageUrl={product.images[0]}
+              title={product.name}
               price={product.price}
-              rate={product.rating.rate}
-              count={product.rating.count}
+              rate={product.ratings.average}
+              count={product.ratings.count}
               setCartItems={setCartItems}
             />
           ))}
