@@ -7,7 +7,7 @@ import Newsletter from '../../ui/Newsletter'
 import Footer from '../../ui/Footer'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { host } from '../../host'
+import { host } from '../../host.js'
 
 export default function Home() {
   const [categories, setCategories] = useState([1]);

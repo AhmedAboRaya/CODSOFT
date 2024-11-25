@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "../components/ui/card";
 import { Star } from "lucide-react";
 import ErrorPage from "../components/errorPage/ErrorPage";
 import axios from "axios";
-import { host } from "../host";
+import { host } from "../host.js";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "./Loader";

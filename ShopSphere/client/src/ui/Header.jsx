@@ -6,7 +6,7 @@ import { ShoppingBag, User, Menu, X } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import axios from "axios";
-import { host } from "../host";
+import { host } from "../host.js";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);

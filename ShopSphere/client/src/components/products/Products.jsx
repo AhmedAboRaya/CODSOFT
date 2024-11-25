@@ -3,7 +3,7 @@ import axios from "axios";
 import ProductCard from "../../ui/ProductCard";
 import { useEffect, useState } from "react";
 import ErrorPage from "../errorPage/ErrorPage"; 
-import { host } from "../../host.js";
+import { host } from "../../host.js.js";
 import { useNavigate } from "react-router-dom"; 
 
 const Products = ({ search, setCartItems }) => {

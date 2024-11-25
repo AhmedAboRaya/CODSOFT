@@ -3,7 +3,7 @@
 // import { Link } from "react-router-dom";
 // import CartCard from "../../ui/CartCard";
 // import axios from "axios";
-// import { host } from "../../host.js"; // Ensure this points to your API base URL
+// import { host } from "../../host.js.js"; // Ensure this points to your API base URL
 
 // const Cart = ({ setCartItems }) => {
 //   const [loading, setLoading] = useState(true);
@@ -224,7 +224,7 @@ import Header from "../../ui/Header";
 import Footer from "../../ui/Footer";
 import Loader from "../../ui/Loader";
 import axios from "axios";
-import { host } from "../../host";
+import { host } from "../../host.js";
 
 export default function Cart() {
   const [loading, setLoading] = useState(true);
