@@ -64,7 +64,7 @@ const Navbar = ({ setSearch, cartItems = [] }) => {
         )}
         <div className="flex-none">
           <ThemeToggle />
-          <Link to="/cart">
+          <Link to="/cart" onClick={() => {cartItems.length = 0}}>
             <div className="btn btn-ghost btn-circle">
               <div className="indicator">
                 <svg
