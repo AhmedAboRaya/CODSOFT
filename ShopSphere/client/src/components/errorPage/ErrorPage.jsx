@@ -1,4 +1,6 @@
-import "./ErrorPage.css"; 
+import { Link } from "react-router-dom";
+import "./ErrorPage.css";
+import { Button } from "../ui/button";
 
 const ErrorPage = () => {
   return (
@@ -13,12 +15,14 @@ const ErrorPage = () => {
           </div>
         </div>
         <div className="error-page__heading">
-          <h1 className="error-page__heading-title">Looks like you&lsquo;re lost</h1>
+          <h1 className="error-page__heading-title">
+            Looks like you&lsquo;re lost
+          </h1>
           <p className="error-page__heading-description">404 error</p>
         </div>
-        <a className="error-page__button" href="/" aria-label="back to home" title="back to home">
-          Back to Home
-        </a>
+        <Button className="mt-3">
+          <Link to="/">Back to Home</Link>
+        </Button>
       </div>
       <button className="color-switcher" data-theme-color-switch>
         &#127769;

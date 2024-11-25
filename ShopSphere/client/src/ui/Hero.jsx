@@ -8,8 +8,8 @@ export default function Hero() {
         <div className="md:w-1/2 mb-10 md:mb-0">
           <h1 className="text-5xl font-bold mb-6">Discover Your Style</h1>
           <p className="text-xl mb-8">Explore our latest collection and find the perfect look for you.</p>
-          <Link href="/shop">
-            <Button size="lg">Shop Now</Button>
+          <Link to="/shop">
+            <Button size="lg" className='border-2 hover:text-black hover:bg-white duration-300'>Shop Now</Button>
           </Link>
         </div>
         <div className="md:w-1/2">

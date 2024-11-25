@@ -9,6 +9,9 @@ import Login from "./components/login/Login";
 import SignUp from "./components/signUp/SignUp ";
 import Checkout from "./components/checkout/Checkout";
 import Home from "./components/home/Home";
+import About from "./components/about/About";
+import Contact from "./components/contact/Contact";
+import Shop from "./components/shop/Shop";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -17,9 +20,9 @@ function App() {
   
   return (
     <>
-      {(location.pathname === "/login" || location.pathname === "/signup") ? null : (
+      {/* {(location.pathname === "/login" || location.pathname === "/signup") ? null : (
         <Navbar setSearch={setSearch} cartItems={cartItems} />
-      ) }
+      ) } */}
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login />} />
@@ -27,6 +30,9 @@ function App() {
         <Route path="/products" element={<Products search={search} setCartItems={setCartItems} />} />
         <Route path="/cart" element={<Cart items={cartItems} setCartItems={setCartItems} />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
