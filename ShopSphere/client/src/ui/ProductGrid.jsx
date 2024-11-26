@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "../components/ui/card";
 import { Star } from "lucide-react";
 import ErrorPage from "../components/errorPage/ErrorPage";
 import axios from "axios";
-import { host } from "../host.js";
+// import { host } from "../host.js";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "./Loader";
@@ -59,16 +59,6 @@ export default function ProductGrid() {
     fetchProducts();
     console.log(productss);
   }, []);
-
-  const updateProductStock = (productId) => {
-    setProductss((prevProducts) =>
-      prevProducts.map((product) =>
-        product._id === productId
-          ? { ...product, stock: product.stock - 1 }
-          : product
-      )
-    );
-  };
 
   if (authError) {
     setTimeout(() => {
