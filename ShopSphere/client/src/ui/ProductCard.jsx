@@ -1,6 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios"; 
-import { host } from "../host.js.js"; 
+import { host } from "../host.js"; 
 
 /* eslint-disable react/prop-types */
 const ProductCard = ({
