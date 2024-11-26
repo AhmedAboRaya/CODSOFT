@@ -7,7 +7,7 @@ import { ShoppingBag, User, Menu } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import axios from "axios";
-import { host } from "../host.js";
+// import { host } from "../host.js";
 
 // eslint-disable-next-line react/prop-types
 export default function Header({auth}) {
