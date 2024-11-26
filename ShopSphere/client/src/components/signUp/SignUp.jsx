@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { host } from '../../host.js'; 
+import { host } from "../../host.js";; 
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
