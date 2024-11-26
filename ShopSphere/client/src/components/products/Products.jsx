@@ -24,7 +24,7 @@
 //       }
 
 //       try {
-//         const response = await axios.get(`${host}/auth/profile`, {
+//         const response = await axios.get(`http://localhost:5000/api/auth/profile`, {
 //           headers: {
 //             Authorization: `Bearer ${token}` 
 //           }
@@ -40,7 +40,7 @@
 
 //     const fetchProducts = async () => {
 //       try {
-//         const response = await axios.get(`${host}/products`);
+//         const response = await axios.get(`http://localhost:5000/api/products`);
 //         setTimeout(() => {
 //           setProducts(response.data);
 //           setLoading(false);

@@ -42,7 +42,7 @@ const ProductCard = ({
     }
 
     try {
-      await axios.post(`${host}/cart/add`, {
+      await axios.post(`http://localhost:5000/api/cart/add`, {
         userId, 
         productId: id, 
         quantity, 

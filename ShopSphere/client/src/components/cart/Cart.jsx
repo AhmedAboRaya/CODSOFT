@@ -27,7 +27,7 @@
 //       }
 
 //       try {
-//         const response = await axios.get(`${host}/auth/profile`, {
+//         const response = await axios.get(`http://localhost:5000/api/auth/profile`, {
 //           headers: {
 //             Authorization: `Bearer ${token}`,
 //           },
@@ -54,7 +54,7 @@
 //       const token = localStorage.getItem("token");
 
 //       try {
-//         const response = await axios.get(`${host}/cart/${userId}`, {
+//         const response = await axios.get(`http://localhost:5000/api/cart/${userId}`, {
 //           headers: {
 //             Authorization: `Bearer ${token}`,
 //           },
@@ -80,7 +80,7 @@
 //   const handleIncrease = async (item) => {
 //     setActionLoading(true);
 //     try {
-//       await axios.put(`${host}/cart/update`, {
+//       await axios.put(`http://localhost:5000/api/cart/update`, {
 //         userId: isUser._id,
 //         productId: item.product._id,
 //         change: 1,
@@ -103,7 +103,7 @@
 //   const handleDecrease = async (item) => {
 //     setActionLoading(true);
 //     try {
-//       await axios.put(`${host}/cart/update`, {
+//       await axios.put(`http://localhost:5000/api/cart/update`, {
 //         userId: isUser._id,
 //         productId: item.product._id,
 //         change: -1,
@@ -126,7 +126,7 @@
 //   const handleDelete = async (item) => {
 //     setActionLoading(true);
 //     try {
-//       await axios.delete(`${host}/cart/remove`, {
+//       await axios.delete(`http://localhost:5000/api/cart/remove`, {
 //         data: {
 //           userId: isUser._id,
 //           productId: item.product._id,
@@ -246,7 +246,7 @@ export default function Cart() {
       }
 
       try {
-        const response = await axios.get(`${host}/auth/profile`, {
+        const response = await axios.get(`http://localhost:5000/api/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -272,7 +272,7 @@ export default function Cart() {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get(`${host}/cart/${userId}`, {
+        const response = await axios.get(`http://localhost:5000/api/cart/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -316,7 +316,7 @@ export default function Cart() {
     setActionLoading(true);
 
     try {
-      await axios.put(`${host}/cart/update`, {
+      await axios.put(`http://localhost:5000/api/cart/update`, {
         userId: isUser._id,
         productId: id,
         change: value,
@@ -336,7 +336,7 @@ export default function Cart() {
   const handleDeleteItem = async (id) => {
     setActionLoading(true);
     try {
-      await axios.delete(`${host}/cart/remove`, {
+      await axios.delete(`http://localhost:5000/api/cart/remove`, {
         data: {
           userId: isUser._id,
           productId: id,

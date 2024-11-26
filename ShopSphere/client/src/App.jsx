@@ -14,7 +14,7 @@ import Shop from "./components/shop/Shop";
 import Header from "./ui/Header.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { host } from './host.js';
+// import { host } from './host.js';
 
 function App() {
   // const [search, setSearch] = useState("");
@@ -24,7 +24,7 @@ function App() {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get(`${host}/auth/profile`, {
+        const response = await axios.get(`http://localhost:5000/api/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -32,6 +32,7 @@ function App() {
 
         localStorage.setItem("userId", response.data._id);
         setAuth(true);
+      // eslint-disable-next-line no-unused-vars
       } catch (error) {
         setAuth(false);
       }
