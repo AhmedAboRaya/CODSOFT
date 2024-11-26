@@ -43,12 +43,12 @@ exports.addItemToCart = async (req, res) => {
       cart.items.push({
         product: productId,
         quantity,
-        price: quantity * product.price
+        price: quantity * product.price,
       });
     }
 
-    product.stock -= quantity;
-    await product.save();
+    // product.stock -= quantity;
+    // await product.save();
 
     cart.totalPrice = calculateTotalPrice(cart.items);
     const updatedCart = await cart.save();
@@ -62,51 +62,64 @@ exports.addItemToCart = async (req, res) => {
 
 // Update item quantity in the cart
 exports.updateCartItem = async (req, res) => {
-  const { userId, productId } = req.body;
-  const quantity = Number(req.body.quantity);
-
-  if (quantity <= 0) {
-    return res.status(400).json({ message: "Quantity must be greater than zero" });
-  }
+  const { userId, productId, change } = req.body;
 
   try {
+    // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
 
+    // Find the item in the cart
     const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
     if (itemIndex === -1) {
       return res.status(404).json({ message: "Product not found in cart" });
     }
 
     const existingItem = cart.items[itemIndex];
+
+    // Find the product details
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const quantityChange = quantity - existingItem.quantity;
+    // Calculate the new quantity
+    const newQuantity = change;
 
-    if (product.stock < quantityChange) {
-      return res.status(400).json({ message: "Insufficient stock available" });
+    // If the new quantity is less than 1, return an error
+    if (newQuantity < 1) {
+      return res.status(400).json({ message: "Quantity must be at least 1" });
     }
 
-    existingItem.quantity = quantity;
-    existingItem.price = quantity * product.price;
+    // Check stock availability when increasing quantity
+    // if (change === 1 && product.stock < 1) {
+    //   return res.status(400).json({ message: "Insufficient stock available" });
+    // }
 
-    product.stock -= quantityChange;
-    await product.save();
+    // Update the item's quantity and price
+    existingItem.quantity = newQuantity;
+    existingItem.price = newQuantity * product.price;
 
-    cart.totalPrice = calculateTotalPrice(cart.items);
+    // Update product stock
+    // product.stock -= change; 
+    // await product.save();
+
+    // Recalculate the total price of the cart
+    cart.totalPrice = cart.items.reduce((total, item) => total + item.price, 0);
+
+    // Save the updated cart
     const updatedCart = await cart.save();
 
-    res.json(updatedCart);
+    // Respond with the updated cart
+    res.json({ message: "Cart updated successfully", cart: updatedCart });
   } catch (error) {
     console.error("Error updating cart item:", error);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 // Remove an item from the cart
 exports.removeCartItem = async (req, res) => {
@@ -129,8 +142,8 @@ exports.removeCartItem = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    product.stock += item.quantity;
-    await product.save();
+    // product.stock += item.quantity;
+    // await product.save();
 
     cart.items.splice(itemIndex, 1);
     cart.totalPrice = calculateTotalPrice(cart.items);
@@ -148,7 +161,7 @@ exports.getCart = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ user: userId }).populate('items.product', 'name price stock');
+    const cart = await Cart.findOne({ user: userId }).populate('items.product', 'name price stock images');
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
