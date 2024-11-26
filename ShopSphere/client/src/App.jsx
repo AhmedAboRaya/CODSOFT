@@ -14,7 +14,7 @@ import Shop from "./components/shop/Shop";
 import Header from "./ui/Header.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { host } from "./host.js";
+import { host } from './host.js';
 
 function App() {
   // const [search, setSearch] = useState("");
