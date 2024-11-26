@@ -1,5 +1,6 @@
 import {Link} from 'react-router-dom'
 import { Button } from '../components/ui/button'
+import img from '../assets/home.png'
 
 export default function Hero() {
   return (
@@ -13,7 +14,7 @@ export default function Hero() {
           </Link>
         </div>
         <div className="md:w-1/2">
-          <img src="/placeholder.svg?height=400&width=600" alt="Hero Image" className="rounded-lg shadow-lg" />
+          <img src={img} alt="Hero Image" className="rounded-lg " />
         </div>
       </div>
     </section>

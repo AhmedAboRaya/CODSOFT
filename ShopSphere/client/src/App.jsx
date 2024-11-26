@@ -11,15 +11,38 @@ import Home from "./components/home/Home";
 import About from "./components/about/About";
 import Contact from "./components/contact/Contact";
 import Shop from "./components/shop/Shop";
+import Header from "./ui/Header.jsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { host } from "./host.js";
 
 function App() {
   // const [search, setSearch] = useState("");
-  
+  const [auth, setAuth] = useState(false);
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.get(`${host}/auth/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        localStorage.setItem("userId", response.data._id);
+        setAuth(true);
+      } catch (error) {
+        setAuth(false);
+      }
+    };
+    validateToken();
+  },[]);
   return (
     <>
-      {/* {(location.pathname === "/login" || location.pathname === "/signup") ? null : (
-        <Navbar setSearch={setSearch} cartItems={cartItems} />
-      ) } */}
+      {(location.pathname === "/login" || location.pathname === "/signup") ? null : (
+        <Header auth={auth}/>
+      ) }
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login />} />

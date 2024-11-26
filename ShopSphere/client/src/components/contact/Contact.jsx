@@ -1,13 +1,11 @@
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
-import Header from '../../ui/Header'
 import Footer from '../../ui/Footer'
 
 export default function Contact() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8">Contact Us</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -30,7 +28,7 @@ export default function Contact() {
           </div>
           <div>
             <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
-            <p className="mb-4">We're here to help and answer any question you might have. We look forward to hearing from you!</p>
+            <p className="mb-4">We&apos;re here to help and answer any question you might have. We look forward to hearing from you!</p>
             <div className="space-y-2">
               <p><strong>Email:</strong> support@example.com</p>
               <p><strong>Phone:</strong> +1 (555) 123-4567</p>

@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200 text-center">
-          <p className="text-gray-600">&copy; 2024 Your E-commerce Store. All rights reserved.</p>
+          <p className="text-gray-600">&copy; 2024 Your ShopSphere Store. All rights reserved.</p>
         </div>
       </div>
     </footer>

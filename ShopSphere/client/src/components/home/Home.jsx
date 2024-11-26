@@ -1,4 +1,3 @@
-import Header from '../../ui/Header'
 import Hero from '../../ui/Hero'
 import FeaturedProducts from '../../ui/FeaturedProducts'
 import Categories from '../../ui/Categories'
@@ -29,7 +28,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <main className="flex-grow">
         <Hero />
         <FeaturedProducts />

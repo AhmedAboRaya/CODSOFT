@@ -293,11 +293,14 @@ export default function Cart() {
 
   useEffect(() => {
     const calculateTotals = () => {
-      const newTotalPrice = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      const newTotalPrice = items.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+      );
       setTotalPrice(newTotalPrice);
-      setTax(newTotalPrice * 0.1); 
+      setTax(newTotalPrice * 0.1);
     };
-  
+
     calculateTotals();
   }, [items]);
 
@@ -311,14 +314,14 @@ export default function Cart() {
 
   const handleChangeQuantity = async (id, value) => {
     setActionLoading(true);
-  
+
     try {
       await axios.put(`${host}/cart/update`, {
         userId: isUser._id,
         productId: id,
         change: value,
       });
-      updateQuantity(id, value); 
+      updateQuantity(id, value);
     } catch (error) {
       console.error(error);
     } finally {
@@ -348,7 +351,7 @@ export default function Cart() {
     }
   };
 
-    if (authError) {
+  if (authError) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center">
         <h2 className="text-xl font-semibold">
@@ -363,89 +366,96 @@ export default function Cart() {
 
   return (
     <>
-      {loading ? (<Loader />) : (<div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
-        {items.length === 0 ? (
-          <p>
-            Your cart is empty.{" "}
-            <Link to="/shop" className="text-blue-600 hover:underline">
-              Continue shopping
-            </Link>
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              {items.map((item) => (
-                <div
-                  key={item._id}
-                  className="flex items-center gap-4 py-4 border-b"
-                >
-                  <img
-                    src={item.product.images}
-                    alt={item.product.name}
-                    className="w-24 h-24 object-cover rounded"
-                  />
-                  <div className="flex-grow">
-                    <h3 className="font-semibold">{item.product.name}</h3>
-                    <p className="text-gray-600">
-                      ${item.product.price.toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleChangeQuantity(
-                          item.product._id,
-                          parseInt(e.target.value)
-                        )
-                      }
-                      className="w-16"
-                      disabled={actionLoading}
-                    />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteItem(item.product._id)}
-                      disabled={actionLoading}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="min-h-screen flex flex-col">
+          <main className="flex-grow container mx-auto px-4 py-8">
+            <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
+            {items.length === 0 ? (
+              <p>
+                Your cart is empty.{" "}
+                <Link to="/shop" className="text-blue-600 hover:underline">
+                  Continue shopping
+                </Link>
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="md:col-span-2">
+                  {items.map((item) => (
+                    <div
+                      key={item._id}
+                      className="flex items-center gap-4 py-4 border-b"
                     >
-                      <Trash2 className="h-5 w-5" />
-                    </Button>
+                      <img
+                        src={item.product.images}
+                        alt={item.product.name}
+                        className="w-24 h-24 object-cover rounded"
+                      />
+                      <div className="flex-grow">
+                        <h3 className="font-semibold">{item.product.name}</h3>
+                        <p className="text-gray-600">
+                          ${item.product.price.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          min="1"
+                          value={item.quantity}
+                          onChange={(e) =>
+                            handleChangeQuantity(
+                              item.product._id,
+                              parseInt(e.target.value)
+                            )
+                          }
+                          className="w-16"
+                          disabled={actionLoading}
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDeleteItem(item.product._id)}
+                          disabled={actionLoading}
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="bg-gray-100 p-6 rounded-lg">
+                    <h2 className="text-2xl font-semibold mb-4">
+                      Order Summary
+                    </h2>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between">
+                        <span>Subtotal</span>
+                        <span>${totalPrice.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Tax</span>
+                        <span>${tax.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between font-semibold">
+                        <span>Total</span>
+                        <span>${(totalPrice + tax).toFixed(2)}</span>
+                      </div>
+                    </div>
+                    <Link to="/checkout">
+                      <Button className="w-full" disabled={actionLoading}>
+                        Proceed to Checkout
+                      </Button>
+                    </Link>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div>
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-                <div className="space-y-2 mb-4">
-                  <div className="flex justify-between">
-                    <span>Subtotal</span>
-                    <span>${totalPrice.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span>${(totalPrice+tax).toFixed(2)}</span>
-                  </div>
-                </div>
-                <Button className="w-full" disabled={actionLoading}>
-                  Proceed to Checkout
-                </Button>
               </div>
-            </div>
-          </div>
-        )}
-      </main>
-      <Footer />
-    </div>) }
+            )}
+          </main>
+          <Footer />
+        </div>
+      )}
     </>
   );
 }

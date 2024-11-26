@@ -9,9 +9,9 @@ import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import axios from "axios";
 import { host } from "../host.js";
 
-export default function Header() {
+// eslint-disable-next-line react/prop-types
+export default function Header({auth}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [auth, setAuth] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -90,32 +90,12 @@ export default function Header() {
       )}
     </>
   );
-
-  useEffect(() => {
-    const validateToken = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const response = await axios.get(`${host}/auth/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        localStorage.setItem("userId", response.data._id);
-        setAuth(true);
-      } catch (error) {
-        setAuth(false);
-      }
-    };
-    validateToken();
-  },[]);
   
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="text-2xl font-bold">
-          LOGO
+          ShopSphere
         </Link>
 
         {/* Desktop Navigation */}
