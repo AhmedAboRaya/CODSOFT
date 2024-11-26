@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/navbar/Navbar";
+// import Navbar from "./components/navbar/Navbar";
 // import Products from "./components/products/Products";
 import Cart from "./components/cart/Cart";
 import ErrorPage from "./components/errorPage/ErrorPage";
 import Login from "./components/login/Login";
-import SignUp from "./components/signUp/SignUp ";
+import SignUp from "./components/signUp/SignUp.jsx";
 import Checkout from "./components/checkout/Checkout";
 import Home from "./components/home/Home";
 import About from "./components/about/About";
